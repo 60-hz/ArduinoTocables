@@ -5,26 +5,15 @@
 // http://www.babd.fr/
 // Version 1.2
 
-/*
-  MIDI Channel Usage:
-  - Channel 0: Sends the lower 7 bits of analog sensor values (0-127).
-  - Channel 1: Sends the upper 3 bits of analog sensor values (extending resolution to 10 bits).
-  - Channel 4: Controls the output mode for each control number:
-    - Value 0: PWM mode (direct analog output).
-    - Value 1: Servo mode (controls servo position).
-    - Value 2: DMX mode (sends data via DMX protocol).
-*/
-
-#include <Servo.h>
+#include "src/Servo.h"
 #include "src/MIDIUSB.h"
 #include "src/DMXSerial.h"
 
-const int numAnalogPins = 6;  // Number of analog pins used to read sensor values
-const int numControlNumbers = 128;  // Maximum number of MIDI control numbers used (up to 128)
-const unsigned long midiDelayInterval = 10;  // Minimum delay in milliseconds between MIDI messages to reduce load
-const int analogThreshold = 2;  // Variation threshold to trigger sending new MIDI values (to avoid small fluctuations)
-const float emaAlpha = 0.2;  // Smoothing coefficient for exponential moving average (between 0 and 1)
-
+const int numAnalogPins = 6;  // Nombre de broches analogiques utilisées pour lire les valeurs de capteurs
+const int numControlNumbers = 128;  // Nombre maximal de numéros de contrôle MIDI utilisés (jusqu'à 128)
+const unsigned long midiDelayInterval = 10;  // Intervalle minimal en millisecondes entre chaque envoi de messages MIDI pour réduire la charge
+const int analogThreshold = 2;  // Seuil de variation pour déclencher l'envoi de nouvelles valeurs MIDI (pour éviter les petites fluctuations)
+const float emaAlpha = 0.2;  // Coefficient de lissage pour la moyenne mobile exponentielle (entre 0 et 1)
 
 byte lower7Bits[numControlNumbers] = {0};
 byte higher7Bits[numControlNumbers] = {0};
